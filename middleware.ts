@@ -1,19 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { auth } from "firebase-admin";
+import { Auth } from "./lib/firebaseAdmin";
 
-// Public routes (tidak butuh login)
-const publicRoutes = ["/login", "/register", "/"];
+const publicRoutes = ["/login", "/register"];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // ❗ Skip middleware untuk public routes
-  if (publicRoutes.some((route) => pathname.startsWith(route))) {
+  if (publicRoutes.some((r) => pathname.startsWith(r))) {
     return NextResponse.next();
   }
 
-  // 🔐 Ambil cookie session
   const token = req.cookies.get("session")?.value;
 
   if (!token) {
@@ -21,26 +19,22 @@ export async function middleware(req: NextRequest) {
   }
 
   try {
-    // 🧪 Cek valid token (cek expired, tampered, dsb)
-    await auth().verifyIdToken(token);
-
-    // Jika token valid → lanjut
+    await Auth.verifyIdToken(token);
     return NextResponse.next();
-  } catch (err) {
-    console.error("❌ Invalid Session:", err);
-
-    // 🧹 Hapus cookie rusak
+  } catch (e) {
     const res = NextResponse.redirect(new URL("/login", req.url));
     res.cookies.delete("session");
-
     return res;
   }
 }
 
 export const config = {
   matcher: [
-    "/dashboard/:path*",
+    "/dashboard",
+    "/",
     "/admin/:path*",
     "/user/:path*",
   ],
 };
+
+export const runtime = "nodejs";
