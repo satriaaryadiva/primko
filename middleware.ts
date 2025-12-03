@@ -19,7 +19,22 @@ export async function middleware(req: NextRequest) {
   }
 
   try {
-    await Auth.verifyIdToken(token);
+    const decoded = await Auth.verifyIdToken(token);
+    const role = decoded.role;
+
+    const url = req.nextUrl.clone();
+
+    // Redirect rules
+    if (pathname.startsWith("/admin") && role !== "admin") {
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
+
+    if (pathname.startsWith("/user") && role !== "user") {
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
+
     return NextResponse.next();
   } catch (e) {
     const res = NextResponse.redirect(new URL("/login", req.url));
@@ -29,12 +44,7 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/dashboard",
-    "/",
-    "/admin/:path*",
-    "/user/:path*",
-  ],
+  matcher: ["/", "/dashboard", "/admin/:path*", "/user/:path*"],
 };
 
 export const runtime = "nodejs";

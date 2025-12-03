@@ -18,18 +18,23 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      const res = await signInWithEmailAndPassword(auth, email, password);
-      const idToken = await res.user.getIdToken();
+const res = await signInWithEmailAndPassword(auth, email, password);
 
-      // 2️⃣ kirim token → buat session cookie
-      await createSession(idToken);
+// GET TOKEN FRESH agar claim terbaru kebaca
+const idToken = await res.user.getIdToken(true);
 
-      router.push("/dashboard");
-    } catch (err) {
-      setLoading(false);
-      alert(err);
-    }
+// Buat session cookie
+await createSession(idToken);
+
+// Ambil role dari token hasil decode
+const decoded = JSON.parse(atob(idToken.split(".")[1]));
+const role = decoded.role;
+
+if (role === "admin") {
+  router.push("/admin");
+} else {
+  router.push("/dashboard");
+}
   }
 
   return (
