@@ -28,7 +28,7 @@ export default function InputField({
   return (
     <InputFade>
     <div className="w-full flex flex-col gap-1">
-      <label className="text-sm font-bold  text-[#363130] ">{label}</label>
+      <label className="text-md font-bold  text-[#363130] ">{label}</label>
 
       <div className="relative">
         {icon && <span className="absolute left-3 top-1/2 -translate-y-1/2 opacity-60">{icon}</span>}

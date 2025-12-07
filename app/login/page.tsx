@@ -9,44 +9,88 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import AuthButton from "@/component/ui/AuthButton";
 import InputField from "@/component/ui/InputField";
 import FormWrapper from "@/component/motions/FormWrapper";
- 
- 
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [error, setError] = useState(""); // <-- ERROR STATE
+
   async function handleLogin(e: any) {
     e.preventDefault();
     setLoading(true);
+    setError(""); // clear error dulu
 
-    const res = await signInWithEmailAndPassword(auth, email, password);
+    try {
+      const res = await signInWithEmailAndPassword(auth, email, password);
 
-    const idToken = await res.user.getIdToken(true);
-    await createSession(idToken);
+      const idToken = await res.user.getIdToken(true);
+      await createSession(idToken);
 
-    const decoded = JSON.parse(atob(idToken.split(".")[1]));
-    const role = decoded.role;
+      const decoded = JSON.parse(atob(idToken.split(".")[1]));
+      const role = decoded.role;
 
-    if (role === "admin") router.push("/admin");
-    else router.push("/dashboard");
+      if (role === "admin") router.push("/admin");
+      else router.push("/dashboard");
+
+    } catch (err: any) {
+      console.error(err);
+
+      // 🔥 Firebase error handling yang ramah user
+      let message = "Gagal login. Cek kembali datanya ya.";
+
+      if (err.code === "auth/user-not-found") {
+        message = "Email belum terdaftar. Coba periksa lagi ya!";
+      }
+      if (err.code === "auth/wrong-password") {
+        message = "Password kamu salah. Coba ketik ulang ya!";
+      }
+      if (err.code === "auth/invalid-credential") {
+        message = "Email atau password salah nih.";
+      }
+      if (err.code === "auth/too-many-requests") {
+        message = "Terlalu banyak percobaan. Coba beberapa menit lagi ya.";
+      }
+
+      setError(message);
+
+      // clear form
+      setEmail("");
+      setPassword("");
+    }
+
+    setLoading(false);
   }
 
   return (
-    <div className="min-h-screen w-full  bg-primary flex items-center flex-col  justify-center pt-6">
-      <FormWrapper delay={1.15}>
-      <h1 className="text-center text-xl font-extrabold  p-14 text-primary tracking-wide">
-        SELAMAT DATANG DI <br /> <span className="text-[#1E1E1E]">PRIMKO</span>
-      </h1>
+    <div className="min-h-screen w-full bg-primary flex flex-col">
+      {/* HEADER BIRU */}
+      <FormWrapper delay={1.15} className="text-center text-white p-24">
+        <p>selamat datang di</p>
+        <h1 className="text-4xl font-extrabold text-primary tracking-wide">
+          PRIMKO
+        </h1>
+        <p>management keuangan angkatan</p>
       </FormWrapper>
 
-      <FormWrapper delay={0.55} className="bg-white m-0 relative   md:max-w-md w-full mt-6 rounded-t-[70px] px-8   py-14  shadow-xl">
+      {/* FORM PUTIH */}
+      <FormWrapper
+        delay={0.55}
+        className="bg-white flex-1 rounded-t-[70px] px-12 py-14 shadow-xl md:max-w-md w-full mx-auto"
+      >
         <form onSubmit={handleLogin} className="space-y-6">
-          
-          {/* Email */}
-           
+
+          {/* 🔥 Error Message */}
+          {error && (
+            <p className="text-red-600 text-sm text-center font-semibold -mt-4">
+              {error}
+            </p>
+          )}
+
           <InputField
             label="Username Or Email"
             type="email"
@@ -55,7 +99,6 @@ export default function LoginPage() {
             onChange={setEmail}
           />
 
-          {/* Password */}
           <InputField
             label="Password"
             type="password"
@@ -64,26 +107,23 @@ export default function LoginPage() {
             onChange={setPassword}
           />
 
-          {/* Login Button */}
           <AuthButton
-            text={loading ? "Loading..." : "Log In"}
+            text={loading ? "" : "Log In"}
             type="submit"
             variant="primary"
           />
 
-          {/* Forgot */}
           <p className="text-xs text-center text-gray-500">
             <a className="text-teal-600 font-semibold cursor-pointer">
               Lupa password? <span>click disini</span>
             </a>
           </p>
 
-          {/* Sign Up */}
           <p className="text-xs text-center mt-6 text-gray-500">
             Belum punya akun ?
-            <span className="text-teal-600 font-semibold cursor-pointer ml-1">
+            <Link href="/register" className="text-teal-600 font-semibold cursor-pointer ml-1">
               Daftar
-            </span>
+            </Link>
           </p>
         </form>
       </FormWrapper>
