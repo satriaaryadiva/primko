@@ -114,7 +114,7 @@ export default function LoginPage() {
           />
 
           <p className="text-xs text-center text-gray-500">
-            <a className="text-teal-600 font-semibold cursor-pointer">
+            <a href="/forgot-password" className="text-teal-600 font-semibold cursor-pointer">
               Lupa password? <span>click disini</span>
             </a>
           </p>
