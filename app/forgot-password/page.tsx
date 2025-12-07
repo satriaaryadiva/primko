@@ -2,12 +2,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import AuthButton from "@/component/ui/AuthButton";
 import InputField from "@/component/ui/InputField";
 
 export default function ForgotPasswordPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -21,9 +23,11 @@ export default function ForgotPasswordPage() {
 
     try {
       await sendPasswordResetEmail(auth, email);
-
       setMessage("Link reset password sudah dikirim ke email kamu 👌🔥");
+     
       setEmail("");
+      router.push("/login");
+      
 
     } catch (err: any) {
       console.log(err);
