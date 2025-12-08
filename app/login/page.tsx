@@ -10,6 +10,7 @@ import AuthButton from "@/component/ui/AuthButton";
 import InputField from "@/component/ui/InputField";
 import FormWrapper from "@/component/motions/FormWrapper";
 import Link from "next/link";
+import LampDemo from "@/component/ui/lamp";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -67,20 +68,21 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-primary flex flex-col">
+    <div className="min-h-screen w-full flex items-center flex-col">
       {/* HEADER BIRU */}
-      <FormWrapper delay={1.15} className="text-center text-white p-24">
+      <LampDemo> 
+      <FormWrapper delay={1.15} className="text-center text-white  ">
         <p>selamat datang di</p>
-        <h1 className="text-4xl font-extrabold text-primary tracking-wide">
+        <h1 className=" font-extrabold text-5xl  text-blue-500 tracking-wide">
           PRIMKO
         </h1>
         <p>management keuangan angkatan</p>
       </FormWrapper>
-
+ </LampDemo>
       {/* FORM PUTIH */}
       <FormWrapper
         delay={0.55}
-        className="bg-white flex-1 rounded-t-[70px] px-12 py-14 shadow-xl md:max-w-md w-full mx-auto"
+        className="bg-white flex-1 fixed bottom-0 rounded-t-[70px] px-12 py-14 shadow-xl sm:max-w-sm  w-full mx-auto"
       >
         <form onSubmit={handleLogin} className="space-y-6">
 
