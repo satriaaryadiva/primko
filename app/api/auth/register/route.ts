@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 import { NextResponse } from "next/server";
-import { Auth, db } from "@/lib/firebaseAdmin"; // getAuth & firestore
+import { Auth } from "@/lib/firebaseAdmin"; // getAuth & firestore
 import { Timestamp, getFirestore } from "firebase-admin/firestore";
 
 export const runtime = "nodejs";
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
           email,
           corps,
           numberPhone,
-          role,
+          cash: 0,
           createdAt: Timestamp.now(),
         },
       },
