@@ -71,12 +71,12 @@ export default function LoginPage() {
     <div className="min-h-screen w-full flex items-center flex-col">
       {/* HEADER BIRU */}
       <LampDemo> 
-      <FormWrapper delay={1.15} className="text-center text-white  ">
+      <FormWrapper delay={2.15} className="text-center text-white  ">
         <p>selamat datang di</p>
         <h1 className=" font-extrabold text-5xl  text-blue-500 tracking-wide">
           PRIMKO
         </h1>
-        <p>management keuangan angkatan</p>
+        <p className="">management keuangan angkatan</p>
       </FormWrapper>
  </LampDemo>
       {/* FORM PUTIH */}
@@ -115,13 +115,13 @@ export default function LoginPage() {
             variant="primary"
           />
 
-          <p className="text-xs text-center text-gray-500">
+          <p className=" text-sm text-center text-gray-500"> Lupa password?
             <a href="/forgot-password" className="text-teal-600 font-semibold cursor-pointer">
-              Lupa password? <span>click disini</span>
+              <span>click disini</span>
             </a>
           </p>
 
-          <p className="text-xs text-center mt-6 text-gray-500">
+          <p className="text-sm text-center mt-6 text-gray-500">
             Belum punya akun ?
             <Link href="/register" className="text-teal-600 font-semibold cursor-pointer ml-1">
               Daftar

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -9,6 +10,35 @@ import AuthButton from "@/component/ui/AuthButton";
 
 export default function RegisterPage() {
   const router = useRouter();
+
+  const CORPS_LIST = [
+  "SET",
+  "SINTEL",
+  "SOPS",
+  "SPERS",
+  "SLOG",
+  "SRENA",
+  "SPOTMAR",
+  "DISPOTMAR",
+  "DISKUM",
+  "DISMINPERS",
+  "DISKES",
+  "DISFASLAN",
+  "DISHARKAN",
+  "DISBEK",
+  "DISANG",
+  "DENMA",
+  "KUWIL",
+  "AKUN",
+  "SATKOM",
+  "DISSYAHAL",
+  "RUMKIT",
+  "FASHARKAN",
+  "TIM INTEL",
+  "DISPEN",
+  "POMAL",
+];
+
 
   const [name, setName] = useState("");
   const [corps, setCorps] = useState("");
@@ -35,7 +65,7 @@ export default function RegisterPage() {
           email,
           password,
           corps,
-          role,
+          role : "user",
           numberPhone,
         }),
       });
@@ -59,12 +89,12 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-primary flex items-center flex-col justify-center pt-6">
+    <div className="min-h-screen w-full   flex items-center flex-col justify-center pt-6">
       
       <FormWrapper delay={0.2}>
-        <h1 className="text-center text-xl font-extrabold p-14 text-primary tracking-wide">
-          BUAT AKUN <br />
-          <span className="text-[#1E1E1E]">PRIMKO</span>
+        <h1 className="text-center text-2xl text-white font-extrabold p-10  tracking-wide">
+         Register <br />
+          <span className=" ">Account</span>
         </h1>
       </FormWrapper>
 
@@ -97,14 +127,24 @@ export default function RegisterPage() {
             value={password}
             onChange={setPassword}
           />
+ <div className="flex flex-col gap-1">
+  <label className="text-sm font-semibold text-primary">Corps</label>
 
-          <InputField
-            label="Corps"
-            type="text"
-            placeholder="Masukkan nama corps"
-            value={corps}
-            onChange={setCorps}
-          />
+  <select
+    className="border px-3 py-2 rounded-lg text-sm"
+    value={corps}
+    onChange={(e) => setCorps(e.target.value)}
+  >
+    <option value="">-- Pilih Corps --</option>
+
+    {CORPS_LIST.map((item) => (
+      <option key={item} value={item}>
+        {item}
+      </option>
+    ))}
+  </select>
+</div>
+           
 
           <InputField
             label="No. HP"
@@ -115,17 +155,7 @@ export default function RegisterPage() {
           />
 
           {/* Kalau pengen pilih role */}
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-semibold text-primary">Role</label>
-            <select
-              className="border px-3 py-2 rounded-lg text-sm"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
+         
 
           <AuthButton
             text={loading ? "Loading..." : "Daftar"}

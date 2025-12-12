@@ -18,7 +18,7 @@ export default function LampDemo({
           duration: 0.8,
           ease: "easeInOut",
         }}
-        className="  bg-linear-to-br from-slate-300 w-full to-slate-500   bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-xl"
+        className="  bg-linear-to-br from-slate-300 w-full to-slate-500   bg-clip-text text-center text-sm font-medium tracking-tight text-transparent md:text-xl"
       >
         {children}
 
