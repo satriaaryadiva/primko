@@ -2,7 +2,7 @@
  
 import { NextResponse } from "next/server";
 import { Auth } from "@/lib/firebaseAdmin"; // getAuth & firestore
-import { Timestamp, getFirestore } from "firebase-admin/firestore";
+import { FieldValue, Timestamp, getFirestore } from "firebase-admin/firestore";
 
 export const runtime = "nodejs";
 
@@ -25,6 +25,8 @@ export async function POST(req: Request) {
       displayName: name,
     });
 
+
+
     // 🗂 Simpan data user ke Firestore
     await getFirestore().collection("users").doc(newUser.uid).set({
   uid: newUser.uid,
@@ -37,6 +39,12 @@ export async function POST(req: Request) {
   isActive: true,
   createdAt: Timestamp.now(),
   updatedAt: Timestamp.now(),
+});
+
+await  getFirestore().collection("adminSummary").doc("summary").update({
+  totalUsers: FieldValue.increment(1),
+  activeUsers: FieldValue.increment(1),
+  updatedAt: new Date(),
 });
 
 

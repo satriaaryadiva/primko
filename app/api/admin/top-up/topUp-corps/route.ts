@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
- 
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
+import { FieldValue, getFirestore, Timestamp } from "firebase-admin/firestore";
 
 export async function POST(req: Request) {
   try {
@@ -11,7 +11,6 @@ export async function POST(req: Request) {
 
     const db = getFirestore();
 
-    // ambil semua user 1 corps
     const snap = await db
       .collection("users")
       .where("corps", "==", corps)
@@ -26,19 +25,17 @@ export async function POST(req: Request) {
 
     let batch = db.batch();
     let counter = 0;
+    const batchPromises: Promise<any>[] = [];
 
     snap.forEach((doc) => {
       const userRef = doc.ref;
       const user = doc.data();
-      const newCash = (user.cash || 0) + amount;
 
-      // update total "cash" user
       batch.update(userRef, {
-        cash: newCash,
+        cash: (user.cash || 0) + amount,
         updatedAt: Timestamp.now(),
       });
 
-      // push ke history masing-masing user
       const historyRef = userRef.collection("history").doc();
       batch.set(historyRef, {
         amount,
@@ -50,20 +47,44 @@ export async function POST(req: Request) {
 
       counter++;
 
-      // kalau batch udah mendekati limit → commit dan reset
-      if (counter >= 400) {
-        batch.commit();
+      if (counter === 400) {
+        batchPromises.push(batch.commit());
         batch = db.batch();
         counter = 0;
       }
     });
 
-    // commit batch terakhir
-    await batch.commit();
+    if (counter > 0) {
+      batchPromises.push(batch.commit());
+    }
+
+    await Promise.all(batchPromises);
+
+    // 🔥 Activity Global
+    await db.collection("Activities").add({
+      type: "TOPUP_CORPS",
+      corps,
+      amount,
+      admin: adminName,
+      totalUser: snap.size,
+      createdAt: Timestamp.now(),
+    });
+
+     const summaryRef = db.collection("admin_summary").doc("main");
+    await summaryRef.set(
+      {
+        totalUsers: FieldValue.increment(1),
+        activeUsers: FieldValue.increment(1),
+        totalCash: FieldValue.increment(amount),
+        
+        updatedAt: Timestamp.now(),
+      },
+      { merge: true }
+    );
 
     return NextResponse.json({
       success: true,
-      message: `Top up ${amount} ke semua user corps ${corps} selesai`,
+      message: `Top up ${amount} ke corps ${corps} berhasil`,
       totalUpdated: snap.size,
     });
   } catch (err) {
