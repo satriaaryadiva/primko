@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     const { name, email, password ,corps, role, numberPhone } = await req.json();
 
     // 🔍 Validasi sederhana
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !corps || !numberPhone) {
       return NextResponse.json(
         { error: "Semua field wajib diisi" },
         { status: 400 }
