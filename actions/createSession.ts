@@ -8,6 +8,7 @@ export async function createSession(token: string) {
   cookieStore.set("session", token, {
     httpOnly: true,
     secure: true,
+    sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 30, // 30 hari = 1 bulan
   });

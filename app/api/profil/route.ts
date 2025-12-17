@@ -1,29 +1,30 @@
+// ========================================
+// 1. API ROUTE (FIXED) - route.ts
+// ========================================
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { getFirestore } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
-import "@/lib/firebaseAdmin"; // 🔥 WAJIB: init admin sdk
+import "@/lib/firebaseAdmin";
 
 export const runtime = "nodejs";
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
-    // 🔐 Ambil token
-    const authHeader =
-      req.headers.get("authorization") ||
-      req.headers.get("Authorization");
+    // 🍪 Ambil session cookie (BUKAN header!)
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("session");
 
-    if (!authHeader?.startsWith("Bearer ")) {
+    if (!sessionCookie?.value) {
       return NextResponse.json(
-        { error: "Unauthorized" },
+        { error: "Unauthorized - No session" },
         { status: 401 }
       );
     }
 
-    const token = authHeader.replace("Bearer ", "");
-
-    // ✅ Verify token
-    const decoded = await getAuth().verifyIdToken(token);
+    // ✅ Verify session cookie as ID token
+    const decoded = await getAuth().verifyIdToken(sessionCookie.value);
 
     const db = getFirestore();
     const userRef = db.collection("users").doc(decoded.uid);
@@ -38,15 +39,7 @@ export async function GET(req: Request) {
 
     const user = userSnap.data();
 
-    // 🛑 Guard admin
-    if (!["admin", "super_admin"].includes(user?.role)) {
-      return NextResponse.json(
-        { error: "Forbidden" },
-        { status: 403 }
-      );
-    }
-
-    // ✅ RESPONSE CLEAN (no Timestamp leak)
+    // ✅ RESPONSE CLEAN
     return NextResponse.json({
       uid: decoded.uid,
       name: user?.name,
@@ -58,7 +51,7 @@ export async function GET(req: Request) {
       updatedAt: user?.updatedAt?.toDate?.() ?? null,
     });
   } catch (err: any) {
-    console.error("ADMIN PROFILE ERROR:", err);
+    console.error("PROFILE ERROR:", err);
 
     if (err.code === "auth/id-token-expired") {
       return NextResponse.json(
