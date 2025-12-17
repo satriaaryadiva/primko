@@ -12,7 +12,7 @@ if (!admin.apps.length) {
     databaseURL: "https://primko-b0a09-default-rtdb.firebaseio.com",
   });
 }
-
+export const firestore = admin.firestore();
 export const db = admin.database();
 export const Auth = admin.auth();
  
