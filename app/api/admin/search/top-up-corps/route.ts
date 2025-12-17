@@ -6,7 +6,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
 
     const page = Number(searchParams.get("page") || 1);
-    const limit = 10;
+    const limit = 6;
     const type = searchParams.get("type"); // VIEW | TOPUP_CORPS
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-export default function FormWrapper({
+export default function LayoutWrapper({
    children,
   className,
   delay = 0,

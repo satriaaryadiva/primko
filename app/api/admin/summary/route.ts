@@ -1,29 +1,22 @@
 import { NextResponse } from "next/server";
 import { getFirestore } from "firebase-admin/firestore";
 
-
 export async function GET() {
-  try {
-    const db = getFirestore();
-    const ref = db.collection("admin_summary").doc("main");
-    const snap = await ref.get();
+  const db = getFirestore();
 
-    if (!snap.exists) {
-      return NextResponse.json(
-        { error: "Admin summary not found" },
-        { status: 404 }
-      );
-    }
+  const snap = await db
+    .collection("admin_summary")
+    .doc("main")
+    .get();
 
+  if (!snap.exists) {
     return NextResponse.json({
-      success: true,
-      data: snap.data(),
+      totalUsers: 0,
+      ActiveUSer: 0,
+      totalCash: 0,
+     
     });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json(
-      { error: "Server error" },
-      { status: 500 }
-    );
   }
+
+  return NextResponse.json(snap.data());
 }

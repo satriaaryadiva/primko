@@ -1,31 +1,50 @@
 "use client";
 
-import RecentActivity from "@/component/ui/RecentActivity";
-import StatCard from "@/component/ui/StatCard";
+import { useEffect, useState } from "react";
+import SummaryGrid from "@/component/summary/Sumarrygrid";
+import DashboardSection from "@/component/ui/DashboardSection";
 import TopupCorpsForm from "@/component/ui/topUpCorpsForm";
+import RecentActivity from "@/component/ui/RecentActivity";
 import Link from "next/link";
- 
- 
+import LayoutWrapper from "@/component/motions/FormWrapper";
+
+interface Summary {
+  totalUsers: number;
+  totalCorps: number;
+  totalCash: number;
+  todayTopup: number;
+}
 
 export default function AdminPage() {
+  const [summary, setSummary] = useState<Summary>({
+    totalUsers: 0,
+    totalCorps: 0,
+    totalCash: 0,
+    todayTopup: 0,
+  });
+
+  useEffect(() => {
+    fetch("/api/admin/summary")
+      .then((res) => res.json())
+      .then(setSummary)
+      .catch(console.error);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6 space-y-6">
-      <h1 className="text-2xl font-bold text-primary">Admin Dashboard</h1>
+    <div className="min-h-screen bg-[#155dfc]  space-y-6">
+      <h1 className="text-2xl text-white  p-16  font-bold">Admin Dashboard</h1>
 
-      {/* STAT */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard title="Total User" value="1.024" />
-        <StatCard title="Total Corps" value="6" />
-        <StatCard title="Total Cash" value="Rp 52.000.000" />
-        <StatCard title="Top Up Hari Ini" value="Rp 1.500.000" />
-      </div>
+      <SummaryGrid data={summary} />
+     <LayoutWrapper className="bg-white flex-1 md:max-w-md w-full mt-6 rounded-t-[60px] px-8 py-14 shadow-xl" > 
+      <DashboardSection title="Top Up Tabungan Wajib">
+        <TopupCorpsForm />
+      </DashboardSection>
 
-      {/* TOP UP */}
-      <TopupCorpsForm/>
-
-      {/* ACTIVITY */}
-      <Link href="/admin/activity" className="text-primary font-semibold"> <RecentActivity /></Link>
-     
+      <Link href="/admin/activity">
+        
+          <RecentActivity />
+         
+      </Link> </LayoutWrapper>
     </div>
   );
 }

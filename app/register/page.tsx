@@ -4,7 +4,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import FormWrapper from "@/component/motions/FormWrapper";
+import LayoutWrapper from "@/component/motions/FormWrapper";
 import InputField from "@/component/ui/InputField";
 import AuthButton from "@/component/ui/AuthButton";
 
@@ -91,14 +91,14 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen w-full   flex items-center flex-col justify-center pt-6">
       
-      <FormWrapper delay={0.2}>
+      <LayoutWrapper delay={0.2}>
         <h1 className="text-center text-2xl text-white font-extrabold p-10  tracking-wide">
          Register <br />
           <span className=" ">Account</span>
         </h1>
-      </FormWrapper>
+      </LayoutWrapper>
 
-      <FormWrapper
+      <LayoutWrapper
         delay={0.45}
         className="bg-white flex-1 md:max-w-md w-full mt-6 rounded-t-[70px] px-8 py-14 shadow-xl"
       >
@@ -173,7 +173,7 @@ export default function RegisterPage() {
             </span>
           </p>
         </form>
-      </FormWrapper>
+      </LayoutWrapper>
     </div>
   );
 }

@@ -32,7 +32,7 @@ export default function TopupCorpsForm() {
       onSubmit={handleSubmit}
       className="bg-white p-6 rounded-xl shadow space-y-4"
     >
-      <h2 className="font-semibold text-lg">Top Up Tabungan Wajib</h2>
+      
 
       <select
         value={corps}
@@ -46,6 +46,7 @@ export default function TopupCorpsForm() {
       </select>
 
       <input
+        placeholder="Jumlah Top Up"
         type="number"
         value={amount}
         onChange={(e) => setAmount(Number(e.target.value))}

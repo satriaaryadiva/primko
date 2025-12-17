@@ -74,7 +74,7 @@ export async function POST(req: Request) {
     await summaryRef.set(
       {
         totalUsers: FieldValue.increment(1),
-        activeUsers: FieldValue.increment(1),
+        
         totalCash: FieldValue.increment(amount),
         
         updatedAt: Timestamp.now(),

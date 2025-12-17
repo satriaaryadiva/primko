@@ -1,4 +1,4 @@
-export default function AuthCard({
+export default function LayoutCard({
   children,
 }: {
   children: React.ReactNode
