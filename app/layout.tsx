@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Primko",
   },
   icons: {
-    icon: "/icon-192x192.png",
+    icon: "/icon0.svg",
     apple: "/icon-192x192.png",
   },
 };

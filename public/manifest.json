@@ -9,7 +9,7 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/",
+      "src": "/favicon.ico",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
@@ -23,7 +23,7 @@
   ],
   "screenshots": [
     {
-      "src": "/screenshot1.png",
+      "src": "/apple-icon.png",
       "sizes": "540x720",
       "type": "image/png"
     }
