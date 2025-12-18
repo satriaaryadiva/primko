@@ -4,7 +4,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Home, BarChart3, ArrowLeftRight, Users, User, Settings, Wallet } from "lucide-react";
+import { Home, BarChart3, ArrowLeftRight, Users, User, Wallet, PlusCircleIcon } from "lucide-react";
 
 interface NavItem {
   icon: React.ReactNode;
@@ -23,13 +23,9 @@ const adminNavItems: NavItem[] = [
     path: "/admin",
     label: "Dashboard",
   },
+  
   {
-    icon: <Users className="w-6 h-6" />,
-    path: "/admin/users",
-    label: "Users",
-  },
-  {
-    icon: <ArrowLeftRight className="w-6 h-6" />,
+    icon: <PlusCircleIcon className="w-6 h-6" />,
     path: "/admin/activity",
     label: "Activity",
   },
@@ -38,10 +34,10 @@ const adminNavItems: NavItem[] = [
     path: "/admin/reports",
     label: "Reports",
   },
-  {
-    icon: <Settings className="w-6 h-6" />,
-    path: "/admin/settings",
-    label: "Settings",
+   {
+    icon: <Users className="w-6 h-6" />,
+    path: "/admin/profile",
+    label: "Profile",
   },
 ];
 
@@ -84,9 +80,9 @@ export default function BottomNavbar({ role }: BottomNavbarProps) {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 safe-bottom z-50">
-      <div className="max-w-md mx-auto px-4">
-        <div className="flex items-center justify-around py-3">
+    <nav className="fixed bottom-0 left-0 right-0  rounded-t-3xl bg-[#155dfc]   w-fit items-center m-auto sm:space-x-2.5  text-white border-t border-gray-200 safe-bottom z-50">
+      <div className="max-w-md mx-auto  px-4">
+        <div className="flex items-center   gap-3.5 justify-around py-3">
           {navItems.map((item) => {
             const active = isActive(item.path);
             
@@ -99,7 +95,7 @@ export default function BottomNavbar({ role }: BottomNavbarProps) {
                   w-16 h-16 rounded-2xl transition-all duration-300
                   ${active 
                     ? "bg-emerald-400 text-white scale-110" 
-                    : "text-gray-600 hover:text-gray-900"
+                    : "text-gray-600  bg-amber-50 hover:text-gray-900"
                   }
                 `}
                 aria-label={item.label}

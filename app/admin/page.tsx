@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // 2. ADMIN PAGE - /app/admin/page.tsx
 // ============================================
 "use client";
