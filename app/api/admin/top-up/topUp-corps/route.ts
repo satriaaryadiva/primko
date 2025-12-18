@@ -73,7 +73,7 @@ export async function POST(req: Request) {
      const summaryRef = db.collection("admin_summary").doc("main");
     await summaryRef.set(
       {
-        totalUsers: FieldValue.increment(1),
+       
         
         totalCash: FieldValue.increment(amount),
         
