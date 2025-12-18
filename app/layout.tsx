@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import PWAProvider from "@/component/providers/PWAProvider";
+
 export const metadata: Metadata = {
   title: "Primko - Finance Management",
   description: "Aplikasi manajemen keuangan untuk corps",
@@ -24,14 +25,16 @@ export default function RootLayout({
   return (
     <html lang="id">
       <head>
+
+        <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#155dfc" />
         <link rel="apple-touch-icon" href="/favicon.ico" />
       </head>
       <body>
-        <PWAProvider>
+      <PWAProvider>
         {children}
-        </PWAProvider>
+   </PWAProvider>
         </body>
     </html>
   );
