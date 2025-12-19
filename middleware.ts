@@ -8,7 +8,7 @@ import "@/lib/firebaseAdmin";
 // Public routes (tidak perlu login)
 const publicRoutes = ["/login", "/register"];
 
-export async function middlware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get("session")?.value;
 
