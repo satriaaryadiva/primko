@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Poppins } from 'next/font/google'
 import PWAProvider from "@/component/providers/PWAProvider";
+
+
 
 export const metadata: Metadata = {
   title: "Primko - Finance Management",
@@ -18,13 +21,18 @@ export const metadata: Metadata = {
   },
 };
 
+const poppinsFont = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'], // pilih sesuai kebutuhan
+  variable: '--font-poppins', // optional kalau mau CSS var
+})
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id">
+    <html lang="id" className={poppinsFont.className}>
       <head>
       <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

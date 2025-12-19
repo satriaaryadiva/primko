@@ -36,7 +36,7 @@ export default function LoginPage() {
       const role = decoded.role;
 
       if (role === "admin") router.push("/admin");
-      else router.push("/dashboard");
+      else router.push("/user");
 
     } catch (err: any) {
       console.error(err);
