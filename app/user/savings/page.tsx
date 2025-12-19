@@ -4,9 +4,17 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, Wallet, TrendingUp, Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+ interface DataSaving {
+  monthlyTotal : number;
+  totalInterest: number;
+  totalDeposit: number;
+  totalWithdraw: number;
+}
+
 export default function SavingsPage() {
   const router = useRouter();
   const [cash, setCash] = useState(0);
+  const [data , setData] = useState<DataSaving| null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,14 +23,15 @@ export default function SavingsPage() {
 
   const fetchCash = async () => {
     try {
-      const res = await fetch("/api/profil", {
+      const res = await fetch("/api/user/savings", {
         credentials: "include",
         method: "GET",
       });
 
       if (res.ok) {
         const data = await res.json();
-        setCash(data.cash || 0);
+        setData(data);
+        setCash(data.totalCash || 0);
       }
     } catch (error) {
       console.error(error);
@@ -71,7 +80,7 @@ export default function SavingsPage() {
           <div className="bg-blue-50 rounded-2xl p-4">
             <TrendingUp className="w-8 h-8 text-blue-600 mb-2" />
             <p className="text-sm text-gray-600">Bulan Ini</p>
-            <p className="text-xl font-bold text-gray-900">Rp 50.000</p>
+            <p className="text-xl font-bold text-gray-900"> {data?.monthlyTotal.toLocaleString("id-ID")} </p>
           </div>
 
           <div className="bg-emerald-50 rounded-2xl p-4">
