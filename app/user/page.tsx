@@ -23,8 +23,9 @@ export default function UserDashboard() {
 
   const fetchUserData = async () => {
     try {
-      const res = await fetch("/api/profile", {
+      const res = await fetch("/api/user/dashboard", {
         credentials: "include",
+        
       });
 
       if (res.status === 401) {

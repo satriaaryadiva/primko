@@ -27,17 +27,25 @@ export default function LoginPage() {
     setError(""); // clear error dulu
 
     try {
-      const res = await signInWithEmailAndPassword(auth, email, password);
+      // Di dalam handleLogin
+const res = await signInWithEmailAndPassword(auth, email, password);
 
-      const idToken = await res.user.getIdToken(true);
-      await createSession(idToken);
+// PAKSA REFRESH agar Custom Claims (role) yang baru diset via Postman masuk ke token
+const idToken = await res.user.getIdToken(true); 
 
-      const decoded = JSON.parse(atob(idToken.split(".")[1]));
-      const role = decoded.role;
+await createSession(idToken);
 
-      if (role === "admin") router.push("/admin");
-      else router.push("/user");
+// Decode untuk cek role
+const decoded = JSON.parse(atob(idToken.split(".")[1]));
+const role = decoded.role;
 
+console.log("Role terdeteksi:", role); // Cek apakah role sudah muncul
+
+if (role === "admin") {
+  router.push("/admin");
+} else if (role === "user") {
+  router.push("/user");
+}  
     } catch (err: any) {
       console.error(err);
 

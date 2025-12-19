@@ -29,7 +29,7 @@ export default function ProfilePage() {
 
   const fetchProfile = async () => {
     try {
-      const res = await fetch("/api/user/profil", {
+      const res = await fetch("/api/user/profile", {
         credentials: "include",
       });
 
