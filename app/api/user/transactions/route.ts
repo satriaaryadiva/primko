@@ -59,7 +59,7 @@ export async function GET(request: Request) {
         type: data.type || "topup",
         date: data.createdAt?.toDate?.().toISOString() || new Date().toISOString(),
         message: data.message,
-        adminName: data.adminName,
+        admin: data.admin,
       };
     });
 

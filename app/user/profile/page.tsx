@@ -73,7 +73,7 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen pb-15 bg-gray-50">
       {/* Header */}
-      <div className="bg-blue-600 text-white p-6">
+      <div className="bg-blue-600 flex gap-4 text-white p-6">
         <button onClick={() => router.back()} className="mb-4">
           <ArrowLeft className="w-6 h-6" />
         </button>

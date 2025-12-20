@@ -80,9 +80,9 @@ export default function BottomNavbar({ role }: BottomNavbarProps) {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0  rounded-t-3xl bg-[#155dfc]   w-fit items-center m-auto sm:space-x-2.5  text-white border-t border-gray-200 safe-bottom z-50">
+    <nav className="fixed bottom-0 left-0 right-0  rounded-t-3xl bg-blue-100  w-full items-center m-auto sm:space-x-2.5  text-white border-t border-gray-200 safe-bottom z-50">
       <div className="max-w-md mx-auto  px-4">
-        <div className="flex items-center   gap-3 justify-around py-3">
+        <div className="flex items-center   gap-5 justify-around py-3">
           {navItems.map((item) => {
             const active = isActive(item.path);
             
@@ -94,8 +94,8 @@ export default function BottomNavbar({ role }: BottomNavbarProps) {
                   relative flex flex-col items-center justify-center
                   w-13 h-13 rounded-2xl font-bold  transition-all duration-300
                   ${active 
-                    ? "bg-emerald-400 font-bold text-white scale-110" 
-                    : "text-gray-600   bg-amber-50 hover:text-gray-900"
+                    ? "bg-blue-600 font-bold w-10 h-10 text-white scale-110" 
+                    : "text-black  w-8 h-8   hover:text-gray-900"
                   }
                 `}
                 aria-label={item.label}
