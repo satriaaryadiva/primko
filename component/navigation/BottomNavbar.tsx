@@ -92,10 +92,10 @@ export default function BottomNavbar({ role }: BottomNavbarProps) {
                 onClick={() => router.push(item.path)}
                 className={`
                   relative flex flex-col items-center justify-center
-                  w-13 h-13 rounded-2xl transition-all duration-300
+                  w-13 h-13 rounded-2xl font-bold  transition-all duration-300
                   ${active 
                     ? "bg-emerald-400 font-bold text-white scale-110" 
-                    : "text-gray-600  bg-amber-50 hover:text-gray-900"
+                    : "text-gray-600   bg-amber-50 hover:text-gray-900"
                   }
                 `}
                 aria-label={item.label}

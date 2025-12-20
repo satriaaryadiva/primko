@@ -79,11 +79,11 @@ export default function UserDashboard() {
       
 
       {/* Menu Grid */}
-      <LayoutWrapper className="bg-white flex-8 w-full h-full items-center  flex-col justify-between   rounded-t-[70px] px-10 py-8   gap-11 shadow-xl sm:max-w-full  mx-auto">
+      <LayoutWrapper className="bg-white flex-8 w-full h-full items-center  flex-col justify-between   rounded-t-[40px] px-8 py-8   gap-11 shadow-xl sm:max-w-full  mx-auto">
         <h3 className="font-semibold text-gray-900 mb-4">Quick Menu</h3>
  
         <Link  className="relative" href="/user/savings ">
-          <div className="bg-blue-50  rounded-2xl p-4 flex items-center justify-between hover:bg-blue-100 transition">
+          <div className="bg-blue-100  rounded-2xl p-4 flex items-center justify-between hover:bg-blue-100 transition">
             <div className="flex items-center gap-4">
               <div className="bg-blue-500 p-3 rounded-xl">
                 <Wallet className="w-6 h-6 text-white" />
@@ -98,7 +98,7 @@ export default function UserDashboard() {
         </Link>
 
         <Link href="/user/history">
-          <div className="bg-emerald-50 rounded-2xl p-4 flex items-center justify-between hover:bg-emerald-100 transition">
+          <div className="bg-blue-100 mt-4 rounded-2xl p-4 flex items-center justify-between hover:bg-emerald-100 transition">
             <div className="flex items-center gap-4">
               <div className="bg-emerald-500 p-3 rounded-xl">
                 <TrendingUp className="w-6 h-6 text-white" />

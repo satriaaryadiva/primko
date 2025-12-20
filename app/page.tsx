@@ -98,11 +98,13 @@ export default function LoginPage() {
             type="email"
             placeholder="example@example.com"
             value={email}
+            disabled={loading}
             onChange={setEmail}
           />
 
           <InputField
             label="Password"
+            disabled={loading}
             type="password"
             placeholder="••••••••"
             value={password}

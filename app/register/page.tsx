@@ -107,6 +107,7 @@ export default function RegisterPage() {
           <InputField
             label="Nama Lengkap"
             type="text"
+            disabled={loading}
             placeholder="Nama lengkap kamu"
             value={name}
             onChange={setName}
@@ -115,6 +116,7 @@ export default function RegisterPage() {
           <InputField
             label="Email"
             type="email"
+            disabled={loading}
             placeholder="example@example.com"
             value={email}
             onChange={setEmail}
@@ -122,6 +124,7 @@ export default function RegisterPage() {
 
           <InputField
             label="Password"
+            disabled={loading}
             type="password"
             placeholder="••••••••"
             value={password}
@@ -148,6 +151,7 @@ export default function RegisterPage() {
 
           <InputField
             label="No. HP"
+            disabled={loading}
             type="number"
             placeholder="08xxxxxxxxxx"
             value={numberPhone}

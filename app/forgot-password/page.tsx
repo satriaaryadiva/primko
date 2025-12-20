@@ -73,6 +73,7 @@ export default function ForgotPasswordPage() {
             label="Email"
             placeholder="example@gmail.com"
             value={email}
+            disabled={loading}
             type="email"
             onChange={setEmail}
           />

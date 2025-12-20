@@ -71,7 +71,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen pb-15 bg-gray-50">
       {/* Header */}
       <div className="bg-blue-600 text-white p-6">
         <button onClick={() => router.back()} className="mb-4">
@@ -100,7 +100,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Status Badge */}
-        <div className="bg-white rounded-2xl p-4">
+        <div className="bg-white rounded-2xl  p-4">
           <div className="flex items-center justify-between">
             <span className="text-gray-700 font-medium">Status</span>
             <span className={`px-4 py-1 rounded-full text-sm font-medium ${

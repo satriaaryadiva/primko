@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { ArrowLeft, Wallet, TrendingUp, Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
+ 
+import LayoutWrapper from "@/component/motions/FormWrapper";
 
  interface DataSaving {
   monthlyTotal : number;
@@ -49,7 +51,8 @@ export default function SavingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-emerald-500 to-teal-600">
+    <div className="   
+     bg-linear-to-br from-emerald-500 to-teal-600">
       {/* Header */}
       <div className="p-6 text-white">
         <button onClick={() => router.back()}>
@@ -59,8 +62,8 @@ export default function SavingsPage() {
       </div>
 
       {/* Balance Card */}
-      <div className="px-6 pb-6">
-        <div className="bg-white/20 backdrop-blur rounded-3xl p-6 text-white">
+      <div className="px-6  pb-6">
+        <div className="bg-white/20 backdrop-blur rounded-3xl p-6   text-white">
           <div className="flex items-center gap-2 mb-4">
             <Wallet className="w-6 h-6" />
             <span className="text-sm opacity-90">Total Saldo</span>
@@ -73,7 +76,8 @@ export default function SavingsPage() {
       </div>
 
       {/* Stats */}
-      <div className="bg-white rounded-t-[40px] px-6 pt-8 pb-6 space-y-4">
+       
+      <LayoutWrapper delay={0.2} className="   bottom-0 left-0 right-0  bg-white flex-8 w-full   items-center  flex-col justify-between    py-`12   sm:max-w-full  mx-auto  rounded-t-[40px] px-6 pt-8 pb-6 space-y-4">
         <h3 className="font-semibold text-gray-900 mb-4">Statistik</h3>
 
         <div className="grid grid-cols-2 gap-4">
@@ -89,7 +93,7 @@ export default function SavingsPage() {
             <p className="text-xl font-bold text-gray-900">12 Bulan</p>
           </div>
         </div>
-      </div>
+      </LayoutWrapper>
     </div>
   );
 }
