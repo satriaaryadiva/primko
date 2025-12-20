@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
+import { useToast } from "@/component/providers/ToastProviders";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, User, Mail, Briefcase, Phone } from "lucide-react";
@@ -20,8 +20,11 @@ interface Profile {
 
 export default function ProfilePage() {
   const router = useRouter();
+  const toast = useToast();
+
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+   
 
   useEffect(() => {
     fetchProfile();
@@ -41,14 +44,19 @@ export default function ProfilePage() {
       if (res.ok) {
         const data = await res.json();
         setProfile(data);
+       
       }
     } catch (error) {
       console.error(error);
     } finally {
+      if (profile?.isActive === false) {
+        toast.error("Your account has been deactivated. hubungi admin");
+      }
       setLoading(false);
     }
-  };
 
+  };
+   
   const handleLogout = async () => {
     await deleteSession();
     router.push("/login");
@@ -71,13 +79,13 @@ export default function ProfilePage() {
         </button>
         <h1 className="text-2xl font-bold">Profile</h1>
       </div>
-
+  
       {/* Profile Content */}
       <div className="px-6 py-8 space-y-4">
         {/* Avatar */}
         <div className="flex justify-center mb-6">
           <div className="w-24 h-24 bg-blue-500 rounded-full flex items-center justify-center text-white text-3xl font-bold">
-            {profile?.name.charAt(0).toUpperCase()}
+            {profile?.name.charAt(0,).toUpperCase()}
           </div>
         </div>
 
@@ -100,7 +108,7 @@ export default function ProfilePage() {
                 ? "bg-green-100 text-green-700" 
                 : "bg-red-100 text-red-700"
             }`}>
-              {profile?.isActive ? "Active" : "Inactive"}
+              {profile?.isActive ? "Active" : "Inactive , Please Contact Admin"  }
             </span>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Poppins } from 'next/font/google'
+import { ToastProvider } from "@/component/providers/ToastProviders";
 import PWAProvider from "@/component/providers/PWAProvider";
 
 
@@ -47,7 +48,8 @@ export default function RootLayout({
       </head>
       <body>
       <PWAProvider>
-        {children}
+        <ToastProvider>
+        {children}</ToastProvider>
    </PWAProvider>
         </body>
     </html>

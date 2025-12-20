@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import LayoutWrapper from "@/component/motions/FormWrapper";
 import { Wallet, TrendingUp, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
@@ -53,9 +54,10 @@ export default function UserDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-500 to-blue-600">
+    <div className="min-h-screen flex flex-col bg-linear-to-br from-blue-500 to-blue-600">
       {/* Header */}
-      <div className="p-6 text-white">
+      <div className=" bg-blue-500 ">
+<div className="p-6 text-white">
         <h2 className="text-sm opacity-90">Selamat Datang,</h2>
         <h1 className="text-2xl font-bold">{user?.name || "User"}</h1>
         <p className="text-sm opacity-80 mt-1">{user?.corps}</p>
@@ -63,8 +65,8 @@ export default function UserDashboard() {
 
       {/* Cash Card */}
       <div className="px-6 pb-6">
-        <div className="bg-white/20 backdrop-blur rounded-3xl p-6 text-white">
-          <div className="flex items-center gap-2 mb-2">
+        <div className="bg-white text-center   backdrop-blur rounded-3xl p-6  text-grey-200 ">
+          <div className="flex items-center  gap-2 mb-2">
             <Wallet className="w-5 h-5" />
             <span className="text-sm opacity-90">Total Tabungan</span>
           </div>
@@ -73,13 +75,15 @@ export default function UserDashboard() {
           </h2>
         </div>
       </div>
+      </div>
+      
 
       {/* Menu Grid */}
-      <div className="bg-white rounded-t-[40px] px-6 pt-8 pb-6 space-y-4">
+      <LayoutWrapper className="bg-white flex-8 w-full h-full items-center  flex-col justify-between   rounded-t-[70px] px-10 py-8   gap-11 shadow-xl sm:max-w-full  mx-auto">
         <h3 className="font-semibold text-gray-900 mb-4">Quick Menu</h3>
-
-        <Link href="/user/savings">
-          <div className="bg-blue-50 rounded-2xl p-4 flex items-center justify-between hover:bg-blue-100 transition">
+ 
+        <Link  className="relative" href="/user/savings ">
+          <div className="bg-blue-50  rounded-2xl p-4 flex items-center justify-between hover:bg-blue-100 transition">
             <div className="flex items-center gap-4">
               <div className="bg-blue-500 p-3 rounded-xl">
                 <Wallet className="w-6 h-6 text-white" />
@@ -107,7 +111,7 @@ export default function UserDashboard() {
             <ArrowUpRight className="w-5 h-5 text-gray-400" />
           </div>
         </Link>
-      </div>
+      </LayoutWrapper>
     </div>
   );
 }

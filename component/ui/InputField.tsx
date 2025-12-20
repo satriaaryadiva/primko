@@ -9,6 +9,7 @@ interface InputFieldProps {
   type?: string
   placeholder?: string
   value: string
+  disabled: boolean
   onChange: (v: string) => void
   icon?: React.ReactNode
 }
@@ -16,6 +17,7 @@ interface InputFieldProps {
 export default function InputField({
   label,
   type = "text",
+  disabled,
   placeholder,
   value,
   onChange,
@@ -37,6 +39,7 @@ export default function InputField({
           type={isPassword && showPassword ? "text" : type}
           placeholder={placeholder}
           value={value}
+          disabled={disabled}
           onChange={(e) => onChange(e.target.value)}
           className={`w-full font-bold rounded-xl border m-0 border-gray-300 bg-[#DFF7E2] text-black py-3 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 transition ${icon ? "pl-10" : ""}`}
         />
