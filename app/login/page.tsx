@@ -55,7 +55,7 @@ export default function LoginPage() {
       if (userRole === "admin") {
         toast.success("Selamat datang kembali, Admin! 👋");
       } else {
-        toast.success("Selamat datang kembali! 👋");
+        toast.success(`Selamat datang kembali! ${userRole} 👋`);
       }
 
       // 6. Simple redirect - Let middleware handle role verification

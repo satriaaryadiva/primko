@@ -80,37 +80,49 @@ export async function GET(request: Request) {
           
           // Convert object or array to array if needed
           let userIdentifiers: string[] = [];
-          
           if (Array.isArray(data.affectedUsers)) {
             userIdentifiers = data.affectedUsers;
           } else if (typeof data.affectedUsers === 'object') {
             // Convert object with numeric keys to array
-            userIdentifiers = Object.values(data.affectedUsers)
-              .filter(id => typeof id === 'string') as string[];
+            userIdentifiers = Object.values(data.affectedUsers).filter(id => typeof id === 'string') as string[];
           }
 
-          // Get user details
-          const userDetailsPromises = userIdentifiers.map(async (userId: string) => {
+          // Get user details - try both as ID and as username
+          const userDetailsPromises = userIdentifiers.map(async (userIdentifier: string) => {
             try {
-              // Try to get user by document ID
-              const userDoc = await db.collection("users").doc(userId).get();
+              // First, try to get by document ID
+              const userDoc = await db.collection("users").doc(userIdentifier).get();
               
               if (userDoc.exists) {
                 return {
-                  name: userDoc.data()?.name || userId,
-                  amount: data.amount
-                };
-              } else {
-                // If user ID doesn't exist, return with the ID as fallback
-                return {
-                  name: userId,
+                  name: userDoc.data()?.name || userIdentifier,
                   amount: data.amount
                 };
               }
-            } catch (err) {
-              console.error(`Error fetching user ${userId}:`, err);
+              
+              // If not found by ID, try to find by username field
+              const usersByName = await db
+                .collection("users")
+                .where("name", "==", userIdentifier)
+                .limit(1)
+                .get();
+              
+              if (!usersByName.empty) {
+                return {
+                  name: usersByName.docs[0].data()?.name || userIdentifier,
+                  amount: data.amount
+                };
+              }
+              
+              // If still not found, just use the identifier as the name
               return {
-                name: userId,
+                name: userIdentifier,
+                amount: data.amount
+              };
+            } catch (err) {
+              console.error(`Error fetching user ${userIdentifier}:`, err);
+              return {
+                name: userIdentifier,
                 amount: data.amount
               };
             }

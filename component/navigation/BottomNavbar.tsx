@@ -4,7 +4,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Home, BarChart3, ArrowLeftRight, Users, User, Wallet, PlusCircleIcon } from "lucide-react";
+import { Home, BarChart3, ArrowLeftRight, Users, User, Wallet, PlusCircleIcon, ActivityIcon, SearchCheckIcon } from "lucide-react";
 
 interface NavItem {
   icon: React.ReactNode;
@@ -23,15 +23,20 @@ const adminNavItems: NavItem[] = [
     path: "/admin",
     label: "Dashboard",
   },
-  
+  {
+    icon : <ActivityIcon className="w-6 h-6" />,
+    path: "/admin/activity",
+    label: "Transactions",
+  }
+  ,
   {
     icon: <PlusCircleIcon className="w-6 h-6" />,
-    path: "/admin/activity",
+    path: "/admin/topup",
     label: "Activity",
   },
   {
-    icon: <BarChart3 className="w-6 h-6" />,
-    path: "/admin/reports",
+    icon: <SearchCheckIcon className="w-6 h-6" />,
+    path: "/admin/searchUser",
     label: "Reports",
   },
    {
@@ -80,7 +85,8 @@ export default function BottomNavbar({ role }: BottomNavbarProps) {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0  rounded-t-3xl bg-blue-100  w-full items-center m-auto sm:space-x-2.5  text-white border-t border-gray-200 safe-bottom z-50">
+    <nav className="fixed bottom-0 left-0 right-0  border-4 border-black border-solid rounded-t-3xl bg-blue-100
+      w-full items-center m-auto sm:space-x-2.5  text-white border-t    safe-bottom z-50">
       <div className="max-w-md mx-auto  px-4">
         <div className="flex items-center   gap-5 justify-around py-3">
           {navItems.map((item) => {

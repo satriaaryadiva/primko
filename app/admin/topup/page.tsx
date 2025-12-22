@@ -1,134 +1,67 @@
-// 2. SIMPLIFIED COMPONENT VERSION (if you want to keep the form component)
-// ============================================
- 
-// TopupCorpsForm.tsx - Improved Version
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { ArrowLeft, TrendingUp } from "lucide-react";
+import TopUpForm from "@/component/ui/topUpCorpsForm";
+import { Card } from "@/component/ui/Card";
 
-interface TopupFormProps {
-  onSuccess?: () => void;
-}
+export default function AdminTopUpPage() {
+  const router = useRouter();
+  const [topUpCount, setTopUpCount] = useState(0);
 
-export default function TopupCorpsForm({ onSuccess }: TopupFormProps) {
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-  const [corps, setCorps] = useState("");
-  const [amount, setAmount] = useState("");
-  const [title, setTitle] = useState("");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const res = await fetch("/api/admin/top-up/topUp-corps", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          corps,
-          amount: Number(amount),
-          title,
-          message,
-          date,
-          adminName: "Admin Primko",
-        }),
-      });
-
-      if (res.ok) {
-        alert("Top up berhasil! 🚀");
-        // Reset form
-        setCorps("");
-        setAmount("");
-        setTitle("");
-        setMessage("");
-        onSuccess?.();
-      } else {
-        const data = await res.json();
-        alert(data.error || "Top up gagal!");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Terjadi kesalahan");
-    } finally {
-      setLoading(false);
-    }
+  const handleSuccess = () => {
+    setTopUpCount(prev => prev + 1);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label className="text-sm font-medium text-gray-700 block mb-1">Date</label>
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-emerald-400 outline-none"
-          required
-        />
-      </div>
-
-      <div>
-        <label className="text-sm font-medium text-gray-700 block mb-1">Corps</label>
-        <select
-          value={corps}
-          onChange={(e) => setCorps(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-emerald-400 outline-none"
-          required
-        >
-          <option value="">Pilih Corps</option>
-          <option value="angkatan laut">Angkatan Laut</option>
-          <option value="angkatan darat">Angkatan Darat</option>
-          <option value="angkatan udara">Angkatan Udara</option>
-          <option value="SET">SET</option>
-        </select>
-      </div>
-
-      <div>
-        <label className="text-sm font-medium text-gray-700 block mb-1">Amount</label>
-        <input
-          type="number"
-          placeholder="50000"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-emerald-400 outline-none"
-          required
-        />
-      </div>
-
-      <div>
-        <label className="text-sm font-medium text-gray-700 block mb-1">Title</label>
-        <input
-          type="text"
-          placeholder="Monthly Savings"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-emerald-400 outline-none"
-          required
-        />
-      </div>
-
-      <div>
-        <label className="text-sm font-medium text-gray-700 block mb-1">Message (Optional)</label>
-        <textarea
-          placeholder="Enter message..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          rows={3}
-          className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-emerald-400 outline-none resize-none"
-        />
-      </div>
-
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full bg-emerald-400 text-white font-semibold py-3 rounded-lg hover:bg-emerald-500 transition disabled:opacity-50"
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 pb-24">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-linear-to-r from-blue-600 to-indigo-600 text-white px-6 py-8"
       >
-        {loading ? "Processing..." : "Submit Top Up"}
-      </button>
-    </form>
+        <button onClick={() => router.back()} className="mb-4">
+          <ArrowLeft className="w-6 h-6" />
+        </button>
+        <h1 className="text-3xl font-bold mb-2">Top Up Tabungan</h1>
+        <p className="text-blue-100">Kelola top up anggota dengan mudah</p>
+      </motion.div>
+
+      {/* Stats */}
+      <div className="px-6 -mt-8 mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <Card className="bg-white/90 backdrop-blur">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Top Up Hari Ini</p>
+                <p className="text-3xl font-bold text-blue-600">{topUpCount}</p>
+              </div>
+              <div className="bg-blue-100 p-4 rounded-xl">
+                <TrendingUp className="w-8 h-8 text-blue-600" />
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+      </div>
+
+      {/* Form */}
+      <div className="px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <Card>
+            <TopUpForm onSuccess={handleSuccess} />
+          </Card>
+        </motion.div>
+      </div>
+    </div>
   );
 }
- 
