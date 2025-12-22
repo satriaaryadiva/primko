@@ -28,15 +28,17 @@ export async function GET(request: Request) {
     const onlyActive = searchParams.get("onlyActive") === "true";
     const limit = parseInt(searchParams.get("limit") || "1000");
 
-    // Build efficient query - start with collection reference
+    // Build efficient query
     let query: Query = db.collection("users");
 
-    // Filter active users FIRST (most efficient)
+    // PENTING: Filter active users HANYA jika onlyActive=true
+    // Jika onlyActive=false atau tidak ada parameter, ambil SEMUA user
     if (onlyActive) {
       query = query.where("isActive", "==", true);
     }
+    // Jika onlyActive=false, tidak ada where clause, jadi ambil semua user (aktif + tidak aktif)
 
-    // Apply limit last
+    // Apply limit
     query = query.limit(limit);
 
     const snapshot = await query.get();
@@ -49,13 +51,22 @@ export async function GET(request: Request) {
         name: data.name,
         email: data.email,
         corps: data.corps,
+        isActive: data.isActive, // Include status
         cash: data.cash || 0,
+        role: data.role,
+        createdAt: data.createdAt,
       };
     });
 
+    // Sort by active status (aktif dulu, baru tidak aktif)
+    const sortedUsers = users.sort((a, b) => {
+      if (a.isActive === b.isActive) return 0;
+      return a.isActive ? -1 : 1;
+    });
+
     return NextResponse.json({
-      users,
-      total: users.length,
+      users: sortedUsers,
+      total: sortedUsers.length,
     });
 
   } catch (err: any) {

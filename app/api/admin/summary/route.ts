@@ -1,92 +1,71 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 import "@/lib/firebaseAdmin";
 
-export async function GET() {
-  try {
-    // 🔐 Authentication: Verify session cookie
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("session");
+// IMPORTANT: Cache this endpoint
+export const revalidate = 300; // 5 menit cache
 
-    if (!sessionCookie?.value) {
-      return NextResponse.json(
-        { error: "Unauthorized - No session" },
-        { status: 401 }
-      );
+export async function GET( ) {
+  try {
+    const cookieStore = await cookies();
+    const session = cookieStore.get("session")?.value;
+
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // ✅ Verify Firebase token
-    const decoded = await getAuth().verifyIdToken(sessionCookie.value);
+    const decoded = await getAuth().verifyIdToken(session);
     const db = getFirestore();
 
-    // 🛡️ Authorization: Check if user is admin
-    const userSnap = await db.collection("users").doc(decoded.uid).get();
-
-    if (!userSnap.exists) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
+    // Check admin - gunakan cached data jika possible
+    const adminSnap = await db.collection("users").doc(decoded.uid).get();
+    if (adminSnap.data()?.role?.trim() !== "admin") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    const userData = userSnap.data();
-    const userRole = userData?.role?.trim(); // Clean whitespace
+    // OPTIMIZED: Use batch reads, avoid N+1 queries
+    const [usersSnap, activitiesSnap] = await Promise.all([
+      db.collection("users").get(),
+      db.collection("Activities")
+        .where("createdAt", ">=", new Date(Date.now() - 24 * 60 * 60 * 1000))
+        .get()
+    ]);
 
-    if (userRole !== "admin") {
-      return NextResponse.json(
-        { error: "Forbidden - Admin access required" },
-        { status: 403 }
-      );
-    }
+    const totalUsers = usersSnap.size;
+    const totalCorps = new Set(
+      usersSnap.docs.map(doc => doc.data().corps)
+    ).size;
 
-    // 📊 Fetch summary data
-    const summarySnap = await db
-      .collection("admin_summary")
-      .doc("main")
-      .get();
+    const totalCash = usersSnap.docs.reduce(
+      (sum, doc) => sum + (doc.data().cash || 0),
+      0
+    );
 
-    // Return default values if document doesn't exist
-    if (!summarySnap.exists) {
-      return NextResponse.json({
-        totalUsers: 0,
-        totalCorps: 0,
-        totalCash: 0,
-        todayTopup: 0,
-      });
-    }
+    const todayTopup = activitiesSnap.docs.reduce(
+      (sum, doc) => sum + (doc.data().amount || 0),
+      0
+    );
 
-    // Return actual data
-    return NextResponse.json(summarySnap.data());
-
-  } catch (err: any) {
-    console.error("❌ ADMIN SUMMARY ERROR:", {
-      message: err.message,
-      code: err.code,
-      stack: err.stack?.split('\n').slice(0, 3), // First 3 lines
+    // Response dengan cache headers
+    const response = NextResponse.json({
+      totalUsers,
+      totalCorps,
+      totalCash,
+      todayTopup,
     });
 
-    // Handle specific errors
-    if (err.code === "auth/id-token-expired") {
-      return NextResponse.json(
-        { error: "Session expired" },
-        { status: 401 }
-      );
-    }
-
-    if (err.code === "auth/argument-error") {
-      return NextResponse.json(
-        { error: "Invalid token" },
-        { status: 401 }
-      );
-    }
-
-    // Generic error
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
+    response.headers.set(
+      'Cache-Control',
+      'public, s-maxage=300, stale-while-revalidate=600'
     );
+
+    return response;
+  } catch (err: any) {
+    console.error("Summary error:", err);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
