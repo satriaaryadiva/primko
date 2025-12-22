@@ -5,7 +5,7 @@ import {
   Users, 
   Building2, 
   Wallet, 
-  TrendingUp,
+  
   CheckCircle2,
   XCircle
 } from "lucide-react";
@@ -50,13 +50,7 @@ export function UserDetailModal({
     }).format(amount);
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("id-ID", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-  };
+  
 
   if (!user) return null;
 
