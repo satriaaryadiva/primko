@@ -31,7 +31,7 @@ interface UserHistory {
 
 interface UserDetailModalProps {
   user: User | null;
-  history: UserHistory[];
+   
   isOpen: boolean;
   onClose: () => void;
 }
