@@ -365,7 +365,7 @@ export default function AdminSearchUserPage() {
       {/* User Detail Modal */}
       <UserDetailModal
         user={selectedUser}
-        history={userHistory}
+        
         isOpen={showModal}
         onClose={() => setShowModal(false)}
       />

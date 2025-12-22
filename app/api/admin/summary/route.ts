@@ -9,7 +9,7 @@ import "@/lib/firebaseAdmin";
 // IMPORTANT: Cache this endpoint
 export const revalidate = 300; // 5 menit cache
 
-export async function GET( ) {
+export async function GET(request: Request) {
   try {
     const cookieStore = await cookies();
     const session = cookieStore.get("session")?.value;

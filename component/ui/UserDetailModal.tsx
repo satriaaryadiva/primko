@@ -38,7 +38,7 @@ interface UserDetailModalProps {
 
 export function UserDetailModal({
   user,
-  history,
+ 
   isOpen,
   onClose,
 }: UserDetailModalProps) {
@@ -69,14 +69,14 @@ export function UserDetailModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+            className="fixed inset-0 pb-9 bg-black/50 backdrop-blur-sm z-50"
           />
 
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className="fixed inset-x-4 bottom-4 max-h-[80vh] overflow-y-auto bg-white rounded-3xl shadow-2xl z-50 p-6"
+            className="fixed inset-x-4 bottom-30 max-h-[80vh] overflow-y-auto bg-white rounded-3xl shadow-2xl z-50 p-6"
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
@@ -152,44 +152,7 @@ export function UserDetailModal({
             </div>
 
             {/* History Section */}
-            <div className="border-t pt-6">
-              <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-                <TrendingUp className="w-5 h-5" />
-                Riwayat Transaksi
-              </h3>
-
-              <div className="space-y-2">
-                {history && history.length > 0 ? (
-                  history.map((tx) => (
-                    <motion.div
-                      key={tx.id}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition"
-                    >
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <p className="font-semibold text-gray-900">
-                            {tx.title}
-                          </p>
-                          <p className="text-xs text-gray-600 mt-1">
-                            {formatDate(tx.date)} • {tx.adminName}
-                          </p>
-                        </div>
-                        <p className="font-bold text-green-600 text-lg">
-                          +{formatCurrency(tx.amount)}
-                        </p>
-                      </div>
-                    </motion.div>
-                  ))
-                ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    <TrendingUp className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                    <p>Belum ada transaksi</p>
-                  </div>
-                )}
-              </div>
-            </div>
+             
           </motion.div>
         </>
       )}
