@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import LayoutWrapper from "@/component/motions/FormWrapper";
 import InputField from "@/component/ui/InputField";
 import AuthButton from "@/component/ui/AuthButton";
+import { useToast } from "@/component/providers/ToastProviders";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -39,20 +40,29 @@ export default function RegisterPage() {
   "POMAL",
 ];
 
-
+const [confirmPassword, setConfirmPassword] = useState("");
+  const toast = useToast();
   const [name, setName] = useState("");
   const [corps, setCorps] = useState("");
-  const [role, setRole] = useState("user");
+ 
   const [numberPhone, setNumberPhone] = useState("");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isSame , setIsSame] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
   async function handleRegister(e: any) {
+
     e.preventDefault();
     setLoading(true);
+    if (password !== confirmPassword) {
+  setLoading(false);
+  toast.error("Password tidak sama, cek lagi ya! 🔐");
+  return;
+}
+
 
     try {
       const res = await fetch("/api/auth/register", {
@@ -78,7 +88,7 @@ export default function RegisterPage() {
         return;
       }
 
-      alert("Registrasi berhasil! Silakan login.");
+      toast.success("Registrasi berhasil! Silahkan login");
       router.push("/login");
     } catch (err) {
       console.log(err);
@@ -121,6 +131,7 @@ export default function RegisterPage() {
             value={email}
             onChange={setEmail}
           />
+          
 
           <InputField
             label="Password"
@@ -130,6 +141,16 @@ export default function RegisterPage() {
             value={password}
             onChange={setPassword}
           />
+{password !== confirmPassword &&  <p className="text-red-500">Password Tidak Sama</p>}
+          <InputField
+              label="Konfirmasi Password"
+              disabled={loading}
+              type="password"
+              placeholder="Ulangi password"
+              value={confirmPassword}
+              onChange={setConfirmPassword}
+            />
+                
  <div className="flex flex-col gap-1">
   <label className="text-sm font-semibold text-primary">Corps</label>
 
