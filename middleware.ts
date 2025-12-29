@@ -104,8 +104,10 @@ async function getUserRole(uid: string): Promise<string> {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
-};
+    '/((?!manifest.json|service-worker.js|icon-512x512.png|icon-192x192.png|favicon.ico|_next/).*)'
+  ]
+}
+
+ 
 
 export const runtime = "nodejs";
