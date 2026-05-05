@@ -5,7 +5,7 @@ import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 import "@/lib/firebaseAdmin";
 
-const publicRoutes = ["/login", "/register"];
+const publicRoutes = ["/login", "/register", "/forgot-password"];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
